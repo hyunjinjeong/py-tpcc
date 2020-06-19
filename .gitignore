@@ -1,8 +1,9 @@
+.idea/
 *.swp
 *.pyc
-*.config
-*.csv
-*.out
-*.log
-*.log.*
+*.config	
+*.csv	
+*.out	
+*.log	
+*.log.*	
 temp*
