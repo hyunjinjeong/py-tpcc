@@ -25,7 +25,20 @@
         시간 재려면, PowerShell에서
         -  Measure-Command {python ./tpcc.py --no-load --warehouses 1 --config=mongodb.config mongodb}
     4. 테스트 후 데이터 삭제
-        - mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase()
-        
- ### pypy로 실행시키면 빠르다!
-    
+        - mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase(), 3. use local 후 2번 실행.
+    - 옵션들
+        - --warehouses=int
+            - warehouse (TPC-C의 데이터 단위)의 수
+        - --duration=int
+            - 데이터를 로드한 후 벤치마크 때 실행시킬 시간 (초 단위)
+        - --clientprocs=int
+            - 각각의 클라이언트 노드에서 실행할 쓰레드 갯수 
+
+## 환경
+
+- OS: Windows 10, 2004
+- CPU: R5 3600
+- RAM: 16GB
+- Storage: MX500 1TB
+- MongoDB: 4.2.8
+- Python: 3.8.2

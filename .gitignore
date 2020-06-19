@@ -7,5 +7,6 @@ venv/
 *.csv	
 *.out	
 *.log	
-*.log.*	
+*.log.*
+results.log
 temp*

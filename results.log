@@ -29,3 +29,13 @@
 06-19-2020 19:46:04 [<module>:256] INFO : Initializing TPC-C benchmark using MongodbDriver
 06-19-2020 19:47:04 [<module>:293] INFO : Final Results
 06-19-2020 19:47:04 [<module>:294] INFO : Threads: 1
+06-19-2020 23:38:23 [<module>:256] INFO : Initializing TPC-C benchmark using MongodbDriver
+06-19-2020 23:38:23 [<module>:266] INFO : Loading TPC-C benchmark data using MongodbDriver
+06-19-2020 23:51:08 [<module>:256] INFO : Initializing TPC-C benchmark using MongodbDriver
+06-19-2020 23:51:08 [<module>:266] INFO : Loading TPC-C benchmark data using MongodbDriver
+06-20-2020 00:48:37 [<module>:256] INFO : Initializing TPC-C benchmark using MongodbDriver
+06-20-2020 00:48:37 [<module>:266] INFO : Loading TPC-C benchmark data using MongodbDriver
+06-20-2020 00:49:04 [<module>:256] INFO : Initializing TPC-C benchmark using MongodbDriver
+06-20-2020 00:49:04 [<module>:266] INFO : Loading TPC-C benchmark data using MongodbDriver
+06-20-2020 00:49:21 [<module>:256] INFO : Initializing TPC-C benchmark using MongodbDriver
+06-20-2020 00:49:21 [<module>:266] INFO : Loading TPC-C benchmark data using MongodbDriver
