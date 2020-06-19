@@ -40,173 +40,178 @@ from time import sleep
 import pymongo
 
 import constants
-from abstractdriver import AbstractDriver
+from .abstractdriver import AbstractDriver
 
 TABLE_COLUMNS = {
     constants.TABLENAME_ITEM: [
-        "I_ID", # INTEGER
-        "I_IM_ID", # INTEGER
-        "I_NAME", # VARCHAR
-        "I_PRICE", # FLOAT
-        "I_DATA", # VARCHAR
-        "I_W_ID", # INTEGER
+        "I_ID",  # INTEGER
+        "I_IM_ID",  # INTEGER
+        "I_NAME",  # VARCHAR
+        "I_PRICE",  # FLOAT
+        "I_DATA",  # VARCHAR
+        "I_W_ID",  # INTEGER
     ],
     constants.TABLENAME_WAREHOUSE: [
-        "W_ID", # SMALLINT
-        "W_NAME", # VARCHAR
-        "W_STREET_1", # VARCHAR
-        "W_STREET_2", # VARCHAR
-        "W_CITY", # VARCHAR
-        "W_STATE", # VARCHAR
-        "W_ZIP", # VARCHAR
-        "W_TAX", # FLOAT
-        "W_YTD", # FLOAT
+        "W_ID",  # SMALLINT
+        "W_NAME",  # VARCHAR
+        "W_STREET_1",  # VARCHAR
+        "W_STREET_2",  # VARCHAR
+        "W_CITY",  # VARCHAR
+        "W_STATE",  # VARCHAR
+        "W_ZIP",  # VARCHAR
+        "W_TAX",  # FLOAT
+        "W_YTD",  # FLOAT
     ],
     constants.TABLENAME_DISTRICT: [
-        "D_ID", # TINYINT
-        "D_W_ID", # SMALLINT
-        "D_NAME", # VARCHAR
-        "D_STREET_1", # VARCHAR
-        "D_STREET_2", # VARCHAR
-        "D_CITY", # VARCHAR
-        "D_STATE", # VARCHAR
-        "D_ZIP", # VARCHAR
-        "D_TAX", # FLOAT
-        "D_YTD", # FLOAT
-        "D_NEXT_O_ID", # INT
+        "D_ID",  # TINYINT
+        "D_W_ID",  # SMALLINT
+        "D_NAME",  # VARCHAR
+        "D_STREET_1",  # VARCHAR
+        "D_STREET_2",  # VARCHAR
+        "D_CITY",  # VARCHAR
+        "D_STATE",  # VARCHAR
+        "D_ZIP",  # VARCHAR
+        "D_TAX",  # FLOAT
+        "D_YTD",  # FLOAT
+        "D_NEXT_O_ID",  # INT
     ],
-    constants.TABLENAME_CUSTOMER:   [
-        "C_ID", # INTEGER
-        "C_D_ID", # TINYINT
-        "C_W_ID", # SMALLINT
-        "C_FIRST", # VARCHAR
-        "C_MIDDLE", # VARCHAR
-        "C_LAST", # VARCHAR
-        "C_STREET_1", # VARCHAR
-        "C_STREET_2", # VARCHAR
-        "C_CITY", # VARCHAR
-        "C_STATE", # VARCHAR
-        "C_ZIP", # VARCHAR
-        "C_PHONE", # VARCHAR
-        "C_SINCE", # TIMESTAMP
-        "C_CREDIT", # VARCHAR
-        "C_CREDIT_LIM", # FLOAT
-        "C_DISCOUNT", # FLOAT
-        "C_BALANCE", # FLOAT
-        "C_YTD_PAYMENT", # FLOAT
-        "C_PAYMENT_CNT", # INTEGER
-        "C_DELIVERY_CNT", # INTEGER
-        "C_DATA", # VARCHAR
+    constants.TABLENAME_CUSTOMER: [
+        "C_ID",  # INTEGER
+        "C_D_ID",  # TINYINT
+        "C_W_ID",  # SMALLINT
+        "C_FIRST",  # VARCHAR
+        "C_MIDDLE",  # VARCHAR
+        "C_LAST",  # VARCHAR
+        "C_STREET_1",  # VARCHAR
+        "C_STREET_2",  # VARCHAR
+        "C_CITY",  # VARCHAR
+        "C_STATE",  # VARCHAR
+        "C_ZIP",  # VARCHAR
+        "C_PHONE",  # VARCHAR
+        "C_SINCE",  # TIMESTAMP
+        "C_CREDIT",  # VARCHAR
+        "C_CREDIT_LIM",  # FLOAT
+        "C_DISCOUNT",  # FLOAT
+        "C_BALANCE",  # FLOAT
+        "C_YTD_PAYMENT",  # FLOAT
+        "C_PAYMENT_CNT",  # INTEGER
+        "C_DELIVERY_CNT",  # INTEGER
+        "C_DATA",  # VARCHAR
     ],
-    constants.TABLENAME_STOCK:      [
-        "S_I_ID", # INTEGER
-        "S_W_ID", # SMALLINT
-        "S_QUANTITY", # INTEGER
-        "S_DIST_01", # VARCHAR
-        "S_DIST_02", # VARCHAR
-        "S_DIST_03", # VARCHAR
-        "S_DIST_04", # VARCHAR
-        "S_DIST_05", # VARCHAR
-        "S_DIST_06", # VARCHAR
-        "S_DIST_07", # VARCHAR
-        "S_DIST_08", # VARCHAR
-        "S_DIST_09", # VARCHAR
-        "S_DIST_10", # VARCHAR
-        "S_YTD", # INTEGER
-        "S_ORDER_CNT", # INTEGER
-        "S_REMOTE_CNT", # INTEGER
-        "S_DATA", # VARCHAR
+    constants.TABLENAME_STOCK: [
+        "S_I_ID",  # INTEGER
+        "S_W_ID",  # SMALLINT
+        "S_QUANTITY",  # INTEGER
+        "S_DIST_01",  # VARCHAR
+        "S_DIST_02",  # VARCHAR
+        "S_DIST_03",  # VARCHAR
+        "S_DIST_04",  # VARCHAR
+        "S_DIST_05",  # VARCHAR
+        "S_DIST_06",  # VARCHAR
+        "S_DIST_07",  # VARCHAR
+        "S_DIST_08",  # VARCHAR
+        "S_DIST_09",  # VARCHAR
+        "S_DIST_10",  # VARCHAR
+        "S_YTD",  # INTEGER
+        "S_ORDER_CNT",  # INTEGER
+        "S_REMOTE_CNT",  # INTEGER
+        "S_DATA",  # VARCHAR
     ],
-    constants.TABLENAME_ORDERS:     [
-        "O_ID", # INTEGER
-        "O_C_ID", # INTEGER
-        "O_D_ID", # TINYINT
-        "O_W_ID", # SMALLINT
-        "O_ENTRY_D", # TIMESTAMP
-        "O_CARRIER_ID", # INTEGER
-        "O_OL_CNT", # INTEGER
-        "O_ALL_LOCAL", # INTEGER
+    constants.TABLENAME_ORDERS: [
+        "O_ID",  # INTEGER
+        "O_C_ID",  # INTEGER
+        "O_D_ID",  # TINYINT
+        "O_W_ID",  # SMALLINT
+        "O_ENTRY_D",  # TIMESTAMP
+        "O_CARRIER_ID",  # INTEGER
+        "O_OL_CNT",  # INTEGER
+        "O_ALL_LOCAL",  # INTEGER
     ],
-    constants.TABLENAME_NEW_ORDER:  [
-        "NO_O_ID", # INTEGER
-        "NO_D_ID", # TINYINT
-        "NO_W_ID", # SMALLINT
+    constants.TABLENAME_NEW_ORDER: [
+        "NO_O_ID",  # INTEGER
+        "NO_D_ID",  # TINYINT
+        "NO_W_ID",  # SMALLINT
     ],
     constants.TABLENAME_ORDER_LINE: [
-        "OL_O_ID", # INTEGER
-        "OL_D_ID", # TINYINT
-        "OL_W_ID", # SMALLINT
-        "OL_NUMBER", # INTEGER
-        "OL_I_ID", # INTEGER
-        "OL_SUPPLY_W_ID", # SMALLINT
-        "OL_DELIVERY_D", # TIMESTAMP
-        "OL_QUANTITY", # INTEGER
-        "OL_AMOUNT", # FLOAT
-        "OL_DIST_INFO", # VARCHAR
+        "OL_O_ID",  # INTEGER
+        "OL_D_ID",  # TINYINT
+        "OL_W_ID",  # SMALLINT
+        "OL_NUMBER",  # INTEGER
+        "OL_I_ID",  # INTEGER
+        "OL_SUPPLY_W_ID",  # SMALLINT
+        "OL_DELIVERY_D",  # TIMESTAMP
+        "OL_QUANTITY",  # INTEGER
+        "OL_AMOUNT",  # FLOAT
+        "OL_DIST_INFO",  # VARCHAR
     ],
-    constants.TABLENAME_HISTORY:    [
-        "H_C_ID", # INTEGER
-        "H_C_D_ID", # TINYINT
-        "H_C_W_ID", # SMALLINT
-        "H_D_ID", # TINYINT
-        "H_W_ID", # SMALLINT
-        "H_DATE", # TIMESTAMP
-        "H_AMOUNT", # FLOAT
-        "H_DATA", # VARCHAR
+    constants.TABLENAME_HISTORY: [
+        "H_C_ID",  # INTEGER
+        "H_C_D_ID",  # TINYINT
+        "H_C_W_ID",  # SMALLINT
+        "H_D_ID",  # TINYINT
+        "H_W_ID",  # SMALLINT
+        "H_DATE",  # TIMESTAMP
+        "H_AMOUNT",  # FLOAT
+        "H_DATA",  # VARCHAR
     ],
 }
 
 TABLE_INDEXES = {
-    constants.TABLENAME_ITEM:       [
+    constants.TABLENAME_ITEM: [
         [("I_W_ID", pymongo.ASCENDING), ("I_ID", pymongo.ASCENDING)]
     ],
-    constants.TABLENAME_WAREHOUSE:  [
+    constants.TABLENAME_WAREHOUSE: [
         [("W_ID", pymongo.ASCENDING), ("W_TAX", pymongo.ASCENDING)]
     ],
-    constants.TABLENAME_DISTRICT:   [
-        [("D_W_ID", pymongo.ASCENDING), ("D_ID", pymongo.ASCENDING), ("D_NEXT_O_ID", pymongo.ASCENDING), ("D_TAX", pymongo.ASCENDING)]
+    constants.TABLENAME_DISTRICT: [
+        [("D_W_ID", pymongo.ASCENDING), ("D_ID", pymongo.ASCENDING), ("D_NEXT_O_ID", pymongo.ASCENDING),
+         ("D_TAX", pymongo.ASCENDING)]
     ],
-    constants.TABLENAME_CUSTOMER:   [
+    constants.TABLENAME_CUSTOMER: [
         [("C_W_ID", pymongo.ASCENDING), ("C_D_ID", pymongo.ASCENDING), ("C_ID", pymongo.ASCENDING)],
         [("C_W_ID", pymongo.ASCENDING), ("C_D_ID", pymongo.ASCENDING), ("C_LAST", pymongo.ASCENDING)]
     ],
-    constants.TABLENAME_STOCK:      [
+    constants.TABLENAME_STOCK: [
         [("S_W_ID", pymongo.ASCENDING), ("S_I_ID", pymongo.ASCENDING), ("S_QUANTITY", pymongo.ASCENDING)],
         "S_I_ID"
     ],
-    constants.TABLENAME_ORDERS:     [
-        [("O_W_ID", pymongo.ASCENDING), ("O_D_ID", pymongo.ASCENDING), ("O_ID", pymongo.ASCENDING), ("O_C_ID", pymongo.ASCENDING)],
-        [("O_C_ID", pymongo.ASCENDING), ("O_D_ID", pymongo.ASCENDING), ("O_W_ID", pymongo.ASCENDING), ("O_ID", pymongo.DESCENDING), ("O_CARRIER_ID", pymongo.ASCENDING), ("O_ENTRY_ID", pymongo.ASCENDING)]
+    constants.TABLENAME_ORDERS: [
+        [("O_W_ID", pymongo.ASCENDING), ("O_D_ID", pymongo.ASCENDING), ("O_ID", pymongo.ASCENDING),
+         ("O_C_ID", pymongo.ASCENDING)],
+        [("O_C_ID", pymongo.ASCENDING), ("O_D_ID", pymongo.ASCENDING), ("O_W_ID", pymongo.ASCENDING),
+         ("O_ID", pymongo.DESCENDING), ("O_CARRIER_ID", pymongo.ASCENDING), ("O_ENTRY_ID", pymongo.ASCENDING)]
     ],
-    constants.TABLENAME_NEW_ORDER:  [
+    constants.TABLENAME_NEW_ORDER: [
         [("NO_W_ID", pymongo.ASCENDING), ("NO_D_ID", pymongo.ASCENDING), ("NO_O_ID", pymongo.ASCENDING)]
     ],
     constants.TABLENAME_ORDER_LINE: [
-        [("OL_O_ID", pymongo.ASCENDING), ("OL_D_ID", pymongo.ASCENDING), ("OL_W_ID", pymongo.ASCENDING), ("OL_NUMBER", pymongo.ASCENDING)],
-        [("OL_O_ID", pymongo.ASCENDING), ("OL_D_ID", pymongo.ASCENDING), ("OL_W_ID", pymongo.ASCENDING), ("OL_I_ID", pymongo.DESCENDING), ("OL_AMOUNT", pymongo.ASCENDING)]
+        [("OL_O_ID", pymongo.ASCENDING), ("OL_D_ID", pymongo.ASCENDING), ("OL_W_ID", pymongo.ASCENDING),
+         ("OL_NUMBER", pymongo.ASCENDING)],
+        [("OL_O_ID", pymongo.ASCENDING), ("OL_D_ID", pymongo.ASCENDING), ("OL_W_ID", pymongo.ASCENDING),
+         ("OL_I_ID", pymongo.DESCENDING), ("OL_AMOUNT", pymongo.ASCENDING)]
     ],
 }
+
 
 ## ==============================================
 ## MongodbDriver
 ## ==============================================
 class MongodbDriver(AbstractDriver):
     DEFAULT_CONFIG = {
-        "uri":              ("The mongodb connection string or URI", "mongodb://localhost:27017"),
-        "name":             ("Database name", "tpcc"),
-        "denormalize":      ("If true, data will be denormalized using MongoDB schema design best practices", True),
-        "notransactions":   ("If true, transactions will not be used (benchmarking only)", False),
-        "findandmodify":    ("If true, all things to update will be fetched via findAndModify", True),
-        "secondary_reads":  ("If true, we will allow secondary reads", True),
-        "retry_writes":     ("If true, we will enable retryable writes", True),
-        "causal_consistency":  ("If true, we will perform causal reads ", True),
-        "shards":          ("If >1 then sharded", "1")
+        "uri": ("The mongodb connection string or URI", "mongodb://localhost:27017"),
+        "name": ("Database name", "tpcc"),
+        "denormalize": ("If true, data will be denormalized using MongoDB schema design best practices", True),
+        "notransactions": ("If true, transactions will not be used (benchmarking only)", False),
+        "findandmodify": ("If true, all things to update will be fetched via findAndModify", True),
+        "secondary_reads": ("If true, we will allow secondary reads", True),
+        "retry_writes": ("If true, we will enable retryable writes", True),
+        "causal_consistency": ("If true, we will perform causal reads ", True),
+        "shards": ("If >1 then sharded", "1")
     }
     DENORMALIZED_TABLES = [
         constants.TABLENAME_ORDERS,
         constants.TABLENAME_ORDER_LINE
     ]
-
 
     def __init__(self, ddl):
         super(MongodbDriver, self).__init__("mongodb", ddl)
@@ -228,7 +233,7 @@ class MongodbDriver(AbstractDriver):
         self.read_concern = "majority"
         self.write_concern = pymongo.write_concern.WriteConcern(w=1)
         self.denormalize = True
-        self.output = open('results.json','a')
+        self.output = open('results.json', 'a')
         self.result_doc = {}
         self.warehouses = 0
         self.shards = 1
@@ -281,28 +286,28 @@ class MongodbDriver(AbstractDriver):
         if default_uri and 'host' in config:
             host = config['host']
             if 'port' in config:
-                host = host+':'+config['port']
+                host = host + ':' + config['port']
             uri = "mongodb://" + host
         if 'user' in config:
             user = config['user']
             if not 'passwd' in config:
                 logging.error("must specify password if user is specified")
                 sys.exit(1)
-            userpassword = urllib.quote_plus(user)+':'+urllib.quote_plus(config['passwd'])+"@"
-            usersecret = urllib.quote_plus(user)+':'+ '*'*len(config['passwd']) + "@"
+            userpassword = urllib.quote_plus(user) + ':' + urllib.quote_plus(config['passwd']) + "@"
+            usersecret = urllib.quote_plus(user) + ':' + '*' * len(config['passwd']) + "@"
 
         pindex = 10  # "mongodb://"
         if uri[0:14] == "mongodb+srv://":
             pindex = 14
-        real_uri = uri[0:pindex]+userpassword+uri[pindex:]
-        display_uri = uri[0:pindex]+usersecret+uri[pindex:]
+        real_uri = uri[0:pindex] + userpassword + uri[pindex:]
+        display_uri = uri[0:pindex] + usersecret + uri[pindex:]
 
         self.client = pymongo.MongoClient(real_uri,
                                           retryWrites=self.retry_writes,
                                           readPreference=self.read_preference,
                                           readConcernLevel=self.read_concern)
 
-        self.result_doc['before']=self.get_server_status()
+        self.result_doc['before'] = self.get_server_status()
 
         # set default writeConcern on the database
         self.database = self.client.get_database(name=str(config['name']), write_concern=self.write_concern)
@@ -345,9 +350,9 @@ class MongodbDriver(AbstractDriver):
             logging.error("ConnectionFailure %d (%s) when connected to %s: ",
                           exc.code, exc.details, display_uri)
             return
-        except pymongo.errors.PyMongoError, err:
+        except pymongo.errors.PyMongoError as err:
             logging.error("Some general error (%s) when connected to %s: ", str(err), display_uri)
-            print "Got some other error: %s" % str(err)
+            print("Got some other error: %s" % str(err))
             return
 
     ## ----------------------------------------------
@@ -370,7 +375,7 @@ class MongodbDriver(AbstractDriver):
             ## If this is the ORDERS table, then we'll just store the record locally for now
             if tableName == constants.TABLENAME_ORDERS:
                 for t in tuples:
-                    key = tuple(t[:1]+t[2:4]) # O_ID, O_C_ID, O_D_ID, O_W_ID
+                    key = tuple(t[:1] + t[2:4])  # O_ID, O_C_ID, O_D_ID, O_W_ID
                     # self.w_orders[key] = dict(map(lambda i: (columns[i], t[i]), num_columns))
                     self.w_orders[key] = dict([(columns[i], t[i]) for i in num_columns])
                 ## FOR
@@ -380,8 +385,9 @@ class MongodbDriver(AbstractDriver):
             ## right ORDERS record
             elif tableName == constants.TABLENAME_ORDER_LINE:
                 for t in tuples:
-                    o_key = tuple(t[:3]) # O_ID, O_D_ID, O_W_ID
-                    assert o_key in self.w_orders, "Order Key: %s\nAll Keys:\n%s" % (str(o_key), "\n".join(map(str, sorted(self.w_orders.keys()))))
+                    o_key = tuple(t[:3])  # O_ID, O_D_ID, O_W_ID
+                    assert o_key in self.w_orders, "Order Key: %s\nAll Keys:\n%s" % (
+                    str(o_key), "\n".join(map(str, sorted(self.w_orders.keys()))))
                     o = self.w_orders[o_key]
                     if not tableName in o:
                         o[tableName] = []
@@ -389,20 +395,21 @@ class MongodbDriver(AbstractDriver):
                 ## FOR
 
             ## Otherwise nothing
-            else: assert False, "Only Orders and order lines are denormalized! Got %s." % tableName
+            else:
+                assert False, "Only Orders and order lines are denormalized! Got %s." % tableName
         ## Otherwise just shove the tuples straight to the target collection
         else:
             if tableName == constants.TABLENAME_ITEM:
                 tuples3 = []
                 if self.shards > 1:
-                    ww = range(1,self.warehouses+1)
+                    ww = range(1, self.warehouses + 1)
                 else:
                     ww = [0]
                 for t in tuples:
                     for w in ww:
-                       t2 = list(t)
-                       t2.append(w)
-                       tuples3.append(t2)
+                        t2 = list(t)
+                        t2.append(w)
+                        tuples3.append(t2)
                 tuples = tuples3
             for t in tuples:
                 tuple_dicts.append(dict([(columns[i], t[i]) for i in num_columns]))
@@ -415,7 +422,8 @@ class MongodbDriver(AbstractDriver):
 
     def loadFinishDistrict(self, w_id, d_id):
         if self.denormalize:
-            logging.debug("Pushing %d denormalized ORDERS records for WAREHOUSE %d DISTRICT %d into MongoDB", len(self.w_orders), w_id, d_id)
+            logging.debug("Pushing %d denormalized ORDERS records for WAREHOUSE %d DISTRICT %d into MongoDB",
+                          len(self.w_orders), w_id, d_id)
             self.database[constants.TABLENAME_ORDERS].insert(self.w_orders.values())
             self.w_orders.clear()
         ## IF
@@ -440,7 +448,7 @@ class MongodbDriver(AbstractDriver):
         result = []
         retries = 0
         # there will be as many orders as districts per warehouse (10)
-        for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE+1):
+        for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1):
             params["d_id"] = d_id
             (r, rt) = self.run_transaction_with_retries(self._doDeliveryTxn, "DELIVERY", params)
             retries += rt
@@ -450,7 +458,7 @@ class MongodbDriver(AbstractDriver):
     def _doDelivery10Txn(self, s, params):
         result = []
         # there will be as many orders as districts per warehouse (10)
-        for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE+1):
+        for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1):
             params["d_id"] = d_id
             r = self._doDeliveryTxn(s, params)
             if r:
@@ -465,7 +473,7 @@ class MongodbDriver(AbstractDriver):
         comment = "DELIVERY " + str(d_id)
         ## getNewOrder
         new_order_query = {"NO_D_ID": d_id, "NO_W_ID": w_id, "$comment": comment}
-        new_order_project = {"_id":0, "NO_D_ID":1, "NO_W_ID":1, "NO_O_ID": 1}
+        new_order_project = {"_id": 0, "NO_D_ID": 1, "NO_W_ID": 1, "NO_O_ID": 1}
         if self.find_and_modify:
             no = self.new_order.find_one_and_delete(new_order_query,
                                                     projection=new_order_project,
@@ -500,7 +508,7 @@ class MongodbDriver(AbstractDriver):
                 o = self.orders.find_one(order_query, session=s)
         else:
             o = self.orders.find_one(order_query,
-                                     {"O_C_ID": 1, "O_ID": 1, "O_D_ID": 1, "O_W_ID": 1, "_id":0},
+                                     {"O_C_ID": 1, "O_ID": 1, "O_D_ID": 1, "O_W_ID": 1, "_id": 0},
                                      session=s)
         assert o, "o cannot be none, delivery"
         c_id = o["O_C_ID"]
@@ -526,7 +534,7 @@ class MongodbDriver(AbstractDriver):
                                                 "OL_D_ID": d_id,
                                                 "OL_W_ID": w_id,
                                                 "$comment": comment},
-                                               {"_id":0, "OL_AMOUNT": 1}, session=s)
+                                               {"_id": 0, "OL_AMOUNT": 1}, session=s)
             assert order_lines, "order_lines cannot be missing in delivery"
             ol_total = sum([ol["OL_AMOUNT"] for ol in order_lines])
 
@@ -584,16 +592,17 @@ class MongodbDriver(AbstractDriver):
         ## ----------------
 
         # getDistrict
-        district_project = {"_id":0, "D_ID":1, "D_W_ID":1, "D_TAX": 1, "D_NEXT_O_ID": 1}
+        district_project = {"_id": 0, "D_ID": 1, "D_W_ID": 1, "D_TAX": 1, "D_NEXT_O_ID": 1}
         if self.find_and_modify:
             d = self.district.find_one_and_update({"D_ID": d_id, "D_W_ID": w_id, "$comment": comment},
-                                                  {"$inc":{"D_NEXT_O_ID":1}},
+                                                  {"$inc": {"D_NEXT_O_ID": 1}},
                                                   projection=district_project,
                                                   sort=[("NO_O_ID", 1)],
                                                   session=s)
             if not d:
-                d1 = self.district.find_one({"D_ID": d_id, "D_W_ID": w_id, "$comment": "new order did not find district"})
-                print d1, w_id, d_id, c_id, i_ids, i_w_ids, s_dist_col
+                d1 = self.district.find_one(
+                    {"D_ID": d_id, "D_W_ID": w_id, "$comment": "new order did not find district"})
+                print(d1, w_id, d_id, c_id, i_ids, i_w_ids, s_dist_col)
             assert d, "Couldn't find district in new order w_id %d d_id %d" % (w_id, d_id)
         else:
             d = self.district.find_one({"D_ID": d_id, "D_W_ID": w_id, "$comment": comment},
@@ -607,24 +616,26 @@ class MongodbDriver(AbstractDriver):
         d_next_o_id = d["D_NEXT_O_ID"]
 
         # fetch matching items and see if they are all valid
-        if self.shards > 1: i_w_id = w_id
-        else: i_w_id = 0
+        if self.shards > 1:
+            i_w_id = w_id
+        else:
+            i_w_id = 0
         items = list(self.item.find({"I_ID": {"$in": i_ids}, "I_W_ID": i_w_id, "$comment": comment},
-                                    {"_id":0, "I_ID": 1, "I_PRICE": 1, "I_NAME": 1, "I_DATA": 1},
+                                    {"_id": 0, "I_ID": 1, "I_PRICE": 1, "I_NAME": 1, "I_DATA": 1},
                                     session=s))
         ## TPCC defines 1% of neworder gives a wrong itemid, causing rollback.
         ## Note that this will happen with 1% of transactions on purpose.
         if len(items) != len(i_ids):
             if not self.no_transactions:
                 s.abort_transaction()
-            logging.debug("1% Abort transaction: " +  constants.INVALID_ITEM_MESSAGE)
-            #print constants.INVALID_ITEM_MESSAGE + ", Aborting transaction (ok for 1%)"
+            logging.debug("1% Abort transaction: " + constants.INVALID_ITEM_MESSAGE)
+            # print constants.INVALID_ITEM_MESSAGE + ", Aborting transaction (ok for 1%)"
             return None
         ## IF
         items = sorted(items, key=lambda x: i_ids.index(x['I_ID']))
 
         # getWarehouseTaxRate
-        w = self.warehouse.find_one({"W_ID": w_id, "$comment": comment}, {"_id":0, "W_TAX": 1}, session=s)
+        w = self.warehouse.find_one({"W_ID": w_id, "$comment": comment}, {"_id": 0, "W_TAX": 1}, session=s)
         assert w, "Couldn't find warehouse in new order w_id %d" % (w_id)
         w_tax = w["W_TAX"]
 
@@ -660,8 +671,8 @@ class MongodbDriver(AbstractDriver):
         ## If all of the items are at the same warehouse, then we'll issue a single
         ## request to get their information, otherwise we'll still issue a single request
         ## ----------------
-        item_w_list = zip(i_ids, i_w_ids)
-        stock_project = {"_id":0, "S_I_ID": 1, "S_W_ID": 1,
+        item_w_list = list(zip(i_ids, i_w_ids))
+        stock_project = {"_id": 0, "S_I_ID": 1, "S_W_ID": 1,
                          "S_QUANTITY": 1, "S_DATA": 1, "S_YTD": 1,
                          "S_ORDER_CNT": 1, "S_REMOTE_CNT": 1, s_dist_col: 1}
         if all_local:
@@ -710,7 +721,7 @@ class MongodbDriver(AbstractDriver):
             s_order_cnt = si["S_ORDER_CNT"]
             s_remote_cnt = si["S_REMOTE_CNT"]
             s_data = si["S_DATA"]
-            s_dist_xx = si[s_dist_col] # Fetches data from the s_dist_[d_id] column
+            s_dist_xx = si[s_dist_col]  # Fetches data from the s_dist_[d_id] column
 
             ## Update stock
             s_ytd += ol_quantity
@@ -805,7 +816,7 @@ class MongodbDriver(AbstractDriver):
         assert d_id, pformat(params)
 
         search_fields = {"C_W_ID": w_id, "C_D_ID": d_id, "$comment": comment}
-        return_fields = {"_id":0, "C_ID": 1, "C_FIRST": 1, "C_MIDDLE": 1, "C_LAST": 1, "C_BALANCE": 1}
+        return_fields = {"_id": 0, "C_ID": 1, "C_FIRST": 1, "C_MIDDLE": 1, "C_LAST": 1, "C_BALANCE": 1}
 
         if c_id != None:
             # getCustomerByCustomerId
@@ -820,7 +831,7 @@ class MongodbDriver(AbstractDriver):
             all_customers = list(self.customer.find(search_fields, return_fields, session=s))
             namecnt = len(all_customers)
             assert namecnt > 0, "No matching customer for last name %s!" % c_last
-            index = (namecnt-1)/2
+            index = (namecnt - 1) // 2
             c = all_customers[index]
             c_id = c["C_ID"]
         ## IF
@@ -833,7 +844,7 @@ class MongodbDriver(AbstractDriver):
         # getLastOrder
         if self.denormalize:
             order = self.orders.find({"O_W_ID": w_id, "O_D_ID": d_id, "O_C_ID": c_id, "$comment": comment},
-                                     {"O_ID": 1, "O_CARRIER_ID": 1, "O_ENTRY_D": 1, "ORDER_LINE":1},
+                                     {"O_ID": 1, "O_CARRIER_ID": 1, "O_ENTRY_D": 1, "ORDER_LINE": 1},
                                      session=s).sort("O_ID", direction=pymongo.DESCENDING).limit(1)[0]
         else:
             order = self.orders.find({"O_W_ID": w_id, "O_D_ID": d_id, "O_C_ID": c_id, "$comment": comment},
@@ -886,12 +897,12 @@ class MongodbDriver(AbstractDriver):
         if self.find_and_modify:
             d = self.district.find_one_and_update({"D_ID": d_id, "D_W_ID": w_id,
                                                    "$comment": comment},
-                                                  {"$inc":{"D_YTD":h_amount}},
+                                                  {"$inc": {"D_YTD": h_amount}},
                                                   projection=district_project,
                                                   session=s)
             if not d:
                 d1 = self.district.find_one({"D_ID": d_id, "D_W_ID": w_id, "$comment": "payment did not find district"})
-                print d1, w_id, d_id, h_amount, c_w_id, c_d_id, c_id, c_last, h_date
+                print(d1, w_id, d_id, h_amount, c_w_id, c_d_id, c_id, c_last, h_date)
             assert d, "Couldn't find district in payment w_id %d d_id %d" % (w_id, d_id)
         else:
             d = self.district.find_one({"D_W_ID": w_id, "D_ID": d_id, "$comment": comment},
@@ -911,7 +922,7 @@ class MongodbDriver(AbstractDriver):
                              "W_ZIP": 1}
         if self.find_and_modify:
             w = self.warehouse.find_one_and_update({"W_ID": w_id, "$comment": comment},
-                                                   {"$inc":{"W_YTD":h_amount}},
+                                                   {"$inc": {"W_YTD": h_amount}},
                                                    projection=warehouse_project,
                                                    session=s)
             assert w, "Couldn't find warehouse in payment w_id %d" % (w_id)
@@ -942,7 +953,7 @@ class MongodbDriver(AbstractDriver):
             all_customers = list(self.customer.find(search_fields, return_fields, session=s))
             namecnt = len(all_customers)
             assert namecnt > 0, "No matching customer w %d d %d clast %s" % (w_id, d_id, c_last)
-            index = (namecnt-1)/2
+            index = (namecnt - 1) // 2
             c = all_customers[index]
             c_id = c["C_ID"]
         ## IF
@@ -952,7 +963,7 @@ class MongodbDriver(AbstractDriver):
         c_data = c["C_DATA"]
 
         # Build CUSTOMER update command
-        customer_update = {"$inc": {"C_BALANCE": h_amount*-1,
+        customer_update = {"$inc": {"C_BALANCE": h_amount * -1,
                                     "C_YTD_PAYMENT": h_amount,
                                     "C_PAYMENT_CNT": 1}}
 
@@ -1005,32 +1016,32 @@ class MongodbDriver(AbstractDriver):
 
         if self.agg and self.denormalize:
             result = list(self.district.aggregate([
-                {"$match":{"D_W_ID":w_id, "D_ID":d_id}},
-                {"$limit":1},
-                {"$project":{"_id":0,
-                             "O_ID": {"$range": [
-                                 {"$subtract" : ["$D_NEXT_O_ID", 20]},
-                                 "$D_NEXT_O_ID"]}}},
-                {"$unwind" : "$O_ID"},
-                {"$lookup":{"from":"ORDERS", "as":"o", "let":{"oid":"$O_ID"}, "pipeline":[
-                    {"$match":{"O_D_ID":d_id, "O_W_ID":w_id, "$expr":{"$eq":["$O_ID", "$$oid"]}}},
-                    {"$project":{"_id":0, "I_IDS":"$ORDER_LINE.OL_I_ID"}}
+                {"$match": {"D_W_ID": w_id, "D_ID": d_id}},
+                {"$limit": 1},
+                {"$project": {"_id": 0,
+                              "O_ID": {"$range": [
+                                  {"$subtract": ["$D_NEXT_O_ID", 20]},
+                                  "$D_NEXT_O_ID"]}}},
+                {"$unwind": "$O_ID"},
+                {"$lookup": {"from": "ORDERS", "as": "o", "let": {"oid": "$O_ID"}, "pipeline": [
+                    {"$match": {"O_D_ID": d_id, "O_W_ID": w_id, "$expr": {"$eq": ["$O_ID", "$$oid"]}}},
+                    {"$project": {"_id": 0, "I_IDS": "$ORDER_LINE.OL_I_ID"}}
                 ]}},
-                {"$unwind" : "$o"},
-                {"$unwind" : "$o.I_IDS"},
-                {"$lookup":{"from":"STOCK", "as":"o", "let":{"ids":"$o.I_IDS"}, "pipeline":[
-                    {"$match":{"S_W_ID":w_id, "S_QUANTITY": {"$lt": threshold},
-                               "$expr":{"$eq":["$S_I_ID", "$$ids"]}}},
-                    {"$project":{"S_W_ID":1}}
+                {"$unwind": "$o"},
+                {"$unwind": "$o.I_IDS"},
+                {"$lookup": {"from": "STOCK", "as": "o", "let": {"ids": "$o.I_IDS"}, "pipeline": [
+                    {"$match": {"S_W_ID": w_id, "S_QUANTITY": {"$lt": threshold},
+                                "$expr": {"$eq": ["$S_I_ID", "$$ids"]}}},
+                    {"$project": {"S_W_ID": 1}}
                 ]}},
-                {"$unwind":"$o"},
-                {"$count":"c"}]))
+                {"$unwind": "$o"},
+                {"$count": "c"}]))
             if not result:
                 return 0
             return int(result[0]["c"])
 
         d = self.district.find_one({"D_W_ID": w_id, "D_ID": d_id, "$comment": comment},
-                                   {"_id":0, "D_NEXT_O_ID": 1}, session=s)
+                                   {"_id": 0, "D_NEXT_O_ID": 1}, session=s)
 
         assert d, "Didn't find matching district in stock level w_id %d d_id %d" % (w_id, d_id)
         o_id = d["D_NEXT_O_ID"]
@@ -1039,7 +1050,7 @@ class MongodbDriver(AbstractDriver):
         if self.denormalize:
             os = list(self.orders.find({"O_W_ID": w_id,
                                         "O_D_ID": d_id,
-                                        "O_ID": {"$lt": o_id, "$gte": o_id-20},
+                                        "O_ID": {"$lt": o_id, "$gte": o_id - 20},
                                         "$comment": comment},
                                        {"ORDER_LINE.OL_I_ID": 1}, session=s))
             if not os:
@@ -1050,7 +1061,7 @@ class MongodbDriver(AbstractDriver):
                 sleep(1)
                 os = list(self.orders.find({"O_W_ID": w_id,
                                             "O_D_ID": d_id,
-                                            "O_ID": {"$lt": o_id, "$gte": o_id-20},
+                                            "O_ID": {"$lt": o_id, "$gte": o_id - 20},
                                             "$comment": comment},
                                            {"ORDER_LINE.OL_I_ID": 1}, session=s))
                 assert os, "didn't find orders in stock level %d %d %d" % (w_id, d_id, o_id)
@@ -1063,9 +1074,9 @@ class MongodbDriver(AbstractDriver):
         else:
             order_lines = list(self.order_line.find({"OL_W_ID": w_id,
                                                      "OL_D_ID": d_id,
-                                                     "OL_O_ID": {"$lt": o_id, "$gte": o_id-20},
+                                                     "OL_O_ID": {"$lt": o_id, "$gte": o_id - 20},
                                                      "$comment": comment},
-                                                    {"_id":0, "OL_I_ID": 1},
+                                                    {"_id": 0, "OL_I_ID": 1},
                                                     batch_size=1000, session=s))
         ## IF
 
@@ -1095,11 +1106,11 @@ class MongodbDriver(AbstractDriver):
                               exc.code, exc.details, name)
                 return (False, None)
             logging.error("Failed with unknown OperationFailure: %d", exc.code)
-            print "Failed with unknown OperationFailure: %d" % exc.code
-            print exc.details
+            print("Failed with unknown OperationFailure: %d" % exc.code)
+            print(exc.details)
             raise
         except pymongo.errors.ConnectionFailure:
-            print "ConnectionFailure during %s: " % name
+            print("ConnectionFailure during %s: " % name)
             return (False, None)
         ## TRY
 
@@ -1108,7 +1119,7 @@ class MongodbDriver(AbstractDriver):
         txn_retry_counter = 0
         to = pymongo.client_session.TransactionOptions(
             read_concern=None,
-            #read_concern=pymongo.read_concern.ReadConcern("snapshot"),
+            # read_concern=pymongo.read_concern.ReadConcern("snapshot"),
             write_concern=self.write_concern,
             read_preference=pymongo.read_preferences.Primary())
         with self.client.start_session(default_transaction_options=to,
@@ -1128,21 +1139,24 @@ class MongodbDriver(AbstractDriver):
                 sleep(txn_retry_counter * .1)
                 logging.debug("txn retry number for %s: %d", name, txn_retry_counter)
             ## WHILE
+
     def get_server_status(self):
-        ss=self.client.admin.command('serverStatus')
+        ss = self.client.admin.command('serverStatus')
         if "$configServerState" in ss:
-           del ss["$configServerState"]
+            del ss["$configServerState"]
         if "$gleStats" in ss:
-           del ss["$gleStats"]
+            del ss["$gleStats"]
         if "$clusterTime" in ss:
-           del ss["$clusterTime"]
+            del ss["$clusterTime"]
         if "transportSecurity" in ss:
-           del ss["transportSecurity"]
+            del ss["transportSecurity"]
+        if "metrics" in ss:
+            del ss["metrics"]
         return ss
 
     def save_result(self, result_doc):
         self.result_doc.update(result_doc)
-        self.result_doc['after']=self.get_server_status()
+        self.result_doc['after'] = self.get_server_status()
         self.client.test.results.save(self.result_doc)
 
 ## CLASS
