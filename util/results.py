@@ -26,6 +26,7 @@
 
 import logging
 import time
+from os import linesep
 from collections import Counter
 
 class Results:
@@ -153,14 +154,14 @@ class Results:
         col_width = 16
         num_columns = 13
         total_width = (col_width*num_columns)-8
-        f = "\n  " + (("%-" + str(col_width) + "s")*num_columns)
+        f = linesep + (("%-" + str(col_width) + "s")*num_columns)
         line = "-"*total_width
 
-        ret = u"\n" + "="*total_width + "\n"
+        ret = linesep + "="*total_width + linesep
         if load_time:
-            ret += "Data Loading Time: %d seconds\n\n" % (load_time)
+            ret += f"Data Loading Time: %d seconds{linesep}{linesep}" % load_time
 
-        ret += "Execution Results after %d seconds\n%s" % (duration, line)
+        ret += f"Execution Results after %d seconds{linesep}%s" % (duration, line)
         ret += f % ("", "Complete", u"Time (µs)", u"Percentage", u"Retries", u"minLatMs", u"p50", u"p75", u"p90", u"p95", u"p99", u"maxLatMs", u"Aborts")
 
         total_time = 0
@@ -231,7 +232,7 @@ class Results:
             result_doc['total_retries'] = total_retries
             result_doc['total'] = total_cnt
             result_doc['aborts'] = total_aborts
-            ret += "\n%s TpmC for %s %s thr %s txn %d WH: %d %d total %d durSec, batch %s %d retries %s%% %s fnM %s p50 %s p75 %s p90 %s p95 %s p99 %s max %s WC %s causal %s 10in1 %s retry %s %d %d" % (
+            ret += linesep + "%s TpmC for %s %s thr %s txn %d WH: %d %d total %d durSec, batch %s %d retries %s%% %s fnM %s p50 %s p75 %s p90 %s p95 %s p99 %s max %s WC %s causal %s 10in1 %s retry %s %d %d" % (
                 time.strftime("%Y-%m-%d %H:%M:%S"),
                 ("normal", "denorm")[driver.denormalize],
                 threads,
@@ -250,5 +251,7 @@ class Results:
         if driver:
             driver.save_result(result_doc)
         print(result_doc)
-        return ret.encode('ascii', "ignore")
+        # return ret.encode('utf-8', "ignore")
+        return ret
 ## CLASS
+

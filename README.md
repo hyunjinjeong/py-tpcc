@@ -7,15 +7,25 @@
     - 설정 방법?
         1. 열려있는 모든 mongo, mongod 프로세스 종료
         2. mongod --port 27017 --dbpath C:\data\db --replSet rs0 --bind_ip localhost
+            - 윈도우 서비스로 등록시켜주면 이거 매번 안해도 됨.
         3. mongo 쉘에서 rs.initiate()
    
 3. 벤치마크 방법
     1. 우선 configuration 파일을 뽑음
         - python ./tpcc.py --print-config mongodb > mongodb.config
+ 
     2. 그 뒤 데이터 load
-        - python ./tpcc.py --no-execute --config=mongodb.config mongodb
+        - python ./tpcc.py --no-execute --warehouses 1 --config=mongodb.config mongodb
+        
+        시간 재려면, PowerShell에서
+        -  Measure-Command {python ./tpcc.py --no-execute --warehouses 1 --config=mongodb.config mongodb}
     3. 그 뒤 트랜잭션 실행
-        - python ./tpcc.py --no-load --config=mongodb.config mongodb
+        - python ./tpcc.py --no-load --warehouses 1 --config=mongodb.config mongodb
+        
+        시간 재려면, PowerShell에서
+        -  Measure-Command {python ./tpcc.py --no-load --warehouses 1 --config=mongodb.config mongodb}
     4. 테스트 후 데이터 삭제
         - mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase()
+        
+ ### pypy로 실행시키면 빠르다!
     

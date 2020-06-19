@@ -1,4 +1,6 @@
 .idea/
+venv/
+
 *.swp
 *.pyc
 *.config	
