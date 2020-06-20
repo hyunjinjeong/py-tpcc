@@ -8,4 +8,5 @@ venv/
 *.log	
 *.log.*
 results.log
+results.json
 temp*
