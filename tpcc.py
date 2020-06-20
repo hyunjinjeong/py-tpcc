@@ -55,7 +55,6 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(logging.Formatter('%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s'))
 logging.getLogger().addHandler(ch)
 
-
 ## ==============================================
 ## createDriverClass
 ## ==============================================
@@ -143,11 +142,12 @@ def loaderFunc(driverClass, scaleParameters, args, config, w_ids):
 def startExecution(driverClass, scaleParameters, args, config):
     logging.debug("Creating client pool with %d processes", args['clients'])
     pool = multiprocessing.Pool(args['clients'])
-    debug = logging.getLogger().isEnabledFor(logging.DEBUG)
+
+    del args['config']
 
     worker_results = []
     for _ in range(args['clients']):
-        r = pool.apply_async(executorFunc, (driverClass, scaleParameters, args, config, debug,))
+        r = pool.apply_async(executorFunc, (driverClass, scaleParameters, args, config))
         worker_results.append(r)
     ## FOR
     pool.close()
@@ -157,7 +157,7 @@ def startExecution(driverClass, scaleParameters, args, config):
     for asyncr in worker_results:
         asyncr.wait()
         r = asyncr.get()
-        assert r != None, "No results object returned by thread!"
+        assert r is not None, "No results object returned by thread!"
         if r == -1:
             sys.exit(1)
         total_results.append(r)
@@ -171,9 +171,9 @@ def startExecution(driverClass, scaleParameters, args, config):
 ## ==============================================
 ## executorFunc
 ## ==============================================
-def executorFunc(driverClass, scaleParameters, args, config, debug):
+def executorFunc(driverClass, scaleParameters, args, config):
     driver = driverClass(args['ddl'])
-    assert driver != None, "No driver in executorFunc"
+    assert driver is not None, "No driver in executorFunc"
     logging.debug("Starting client execution: %s", driver)
 
     config['execute'] = True
@@ -229,9 +229,9 @@ if __name__ == '__main__':
 
     ## Create a handle to the target client driver
     driverClass = createDriverClass(args['system'])
-    assert driverClass != None, "Failed to find '%s' class" % args['system']
+    assert driverClass is not None, "Failed to find '%s' class" % args['system']
     driver = driverClass(args['ddl'])
-    assert driver != None, "Failed to create '%s' driver" % args['system']
+    assert driver is not None, "Failed to create '%s' driver" % args['system']
     if args['print_config']:
         config = driver.makeDefaultConfig()
         print(driver.formatConfig(config))
