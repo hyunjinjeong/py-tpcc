@@ -1,4 +1,4 @@
-# py-tpcc - MongoDB Adapted TPC-C Benchmark Using Python 3
+# MongoDB Adapted TPC-C Benchmark Using Python 3
 
 ## Prerequisite
 
