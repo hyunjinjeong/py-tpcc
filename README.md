@@ -2,6 +2,8 @@
 
 The goal of this repository is to benchmark MongoDB using the TPC-C benchmark.
 
+There are results of the benchmarks in [RESULTS.md](https://github.com/hyunjinjeong/py-tpcc/blob/master/RESULTS.md).
+
 For more information about TPC-C benchmark adaption for MongoDB, please see [this paper](http://www.vldb.org/pvldb/vol12/p2254-kamsky.pdf).
 
 ## Prerequisite
