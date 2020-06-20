@@ -1,54 +1,106 @@
-# py-tpcc
+# py-tpcc - MongoDB Adapted TPC-C Benchmark Using Python 3
 
-1. 각종 라이브러리들 설치해야 함.
+## Prerequisite
 
-2. MongoDB에서 multi-document 트랜잭션 하기 위해서는 1. shared cluster, 2. replica set 둘 중 하나여야 함.
-    - 여기선 a non-sharded Replica Set with 1 node로 설정.
-    - 설정 방법?
-        1. 열려있는 모든 mongo, mongod 프로세스 종료
-        2. mongod --port 27017 --dbpath C:\data\db --replSet rs0 --bind_ip localhost
-            - 윈도우 서비스로 등록시켜주면 이거 매번 안해도 됨.
-        3. mongo 쉘에서 rs.initiate()
-   
-3. 벤치마크 방법
+1. Install [MongoDB](https://www.mongodb.com/download-center/community).
 
-warehouse 100개를 기준으로 함.
+2. Install [Python](https://www.python.org/downloads/).
 
-    1. 우선 configuration 파일을 뽑음
-        python ./tpcc.py --print-config mongodb > mongodb.config
- 
-    2. 그 뒤 데이터 load
-        python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb
-        **대략 1시간 30분 정도 소요됨.**
-        
-        - 시간 재려면, PowerShell에서
-        Measure-Command {python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb}
-    3. 그 뒤 트랜잭션 실행
-        python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb
-        
-        - 시간 재려면, PowerShell에서
-        Measure-Command {python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb}
-    4. 테스트 끝난 후 데이터 삭제
-        mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase(), 3. use local 후 2번 실행.
-    - 옵션들
-        --no-execute
-            벤치마크를 수행하지 않고 데이터 load만 함
-        --no-load
-            데이터 load하지 않고 벤치마크만 수행
-        --warehouses=int
-            warehouse (TPC-C의 데이터 단위)의 수
-        --duration=int
-            데이터를 로드한 후 벤치마크 때 실행시킬 시간 (초 단위)
-        --clients=int
-            각각의 클라이언트 노드에서 실행할 쓰레드 갯수 
-        --debug
-            디버그 정보들까지 logging
+3. Install pip modules.
 
-## 환경
+    ```shell
+    pip install pymongo
+    pip install execnet
+    ```
 
-- OS: Windows 10, 2004
-- CPU: R5 3600
-- RAM: 16GB
-- Storage: MX500 1TB
-- MongoDB: 4.2.8
-- Python: 3.8.2
+## Setup
+
+To use multi-document actions on MongoDB, a database should be either a shared cluster or a replica set.
+
+In this test, I used a non-shared replica set with one node in order to make configuration simple.
+
+To run 'mongod' as a replica set on localhost, run the server as below:
+
+1. Terminate all the mongo and mongod process.
+
+2. Run the MongoDB server.
+    ```powershell
+    mongod --port 27017 --dbpath YOUR_DB_DIRECTORY_PATH --replSet rs0 --bind_ip localhost
+    ```
+
+3. Initialize a replica set on client side.
+    ```powershell
+    mongo # start mongo shell
+    > rs.initiate()
+    ```
+
+## Run the benchmark
+
+In TPC-C tests, the amount of data is determined by the number of `warehouses`.
+
+In this test, I used 100 warehouses and the benchmarks ran for 600 seconds. 
+
+The number of clients (threads) varied from 1 to 48.
+
+1. First, generate a MongoDB configuration file.
+    ```powershell
+    python ./tpcc.py --print-config mongodb > mongodb.config
+    ```
+
+2. Load the data.
+    ```powershell
+    # It takes about an hour and a half when there are 100 warehouses.
+    python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb
+    ```
+    Once you load the data, the data can be reused through multiple benchmarks.
+    To measure how long the command takes to run on Windows, use this line instead.
+    ```powershell
+    Measure-Command {python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb}
+    ```
+
+3. Execute the benchmark
+    ```powershell
+    python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb
+    # If you would like to measure the elapsed time
+    Measure-Command {python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb}
+    ```
+    
+4. Delete the data after finishing the tests.
+    ```powershell
+    mongo
+    > use tpcc
+    > db.dropDatabase()
+    > use local
+    > db.dropDatabase() # The mongo server has to stop running to drop local.
+    ```
+    
+## Arguments
+
+1. --no-execute
+    Only load the data
+
+2. --no-load
+    Only execute the benchmark
+
+3. --warehouses=int
+    The number of warehouses
+
+4. --duration=int
+    How long to the execution phase of the benchmark (in seconds)
+
+5. --clients=int
+    The process number of a single node (for concurrent execution).
+
+## Environment
+
+- `OS`: Windows 10, 2004
+
+- `CPU`: R5 3600
+
+- `RAM`: 16GB
+
+- `Storage`: MX500 1TB
+
+- `MongoDB`: 4.2.8
+
+- `Python`: 3.8.2
