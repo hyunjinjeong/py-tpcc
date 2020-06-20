@@ -15,21 +15,19 @@
 warehouse 100개를 기준으로 함.
 
     1. 우선 configuration 파일을 뽑음
-        python ./coordinator.py --print-config mongodb > mongodb.config
+        python ./tpcc.py --print-config mongodb > mongodb.config
  
     2. 그 뒤 데이터 load
-        python ./coordinator.py --no-execute --warehouses 100 --config=mongodb.config mongodb
+        python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb
+        **대략 1시간 30분 정도 소요됨.**
         
         - 시간 재려면, PowerShell에서
-        Measure-Command {python ./coordinator.py --no-execute --warehouses 1 --config=mongodb.config mongodb}
+        Measure-Command {python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb}
     3. 그 뒤 트랜잭션 실행
-        python ./coordinator.py --no-load --warehouses 100 --config=mongodb.config mongodb
+        python ./tpcc.py --no-load --warehouses=100 --duration=6000 --clients=1 --config=mongodb.config mongodb
         
         - 시간 재려면, PowerShell에서
-        Measure-Command {python ./coordinator.py --no-load --warehouses 1 --config=mongodb.config mongodb}
-
-        - 테스트 예시 Command
-        Measure-Command {python ./coordinator.py --no-load --warehouses 100 --duration 6000 --clients 1 --config=mongodb.config mongodb}
+        Measure-Command {python ./tpcc.py --no-load --warehouses=100 --duration=6000 --clients=1 --config=mongodb.config mongodb}
     4. 테스트 후 데이터 삭제
         mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase(), 3. use local 후 2번 실행.
     - 옵션들

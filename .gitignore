@@ -3,7 +3,6 @@ venv/
 
 *.swp
 *.pyc
-*.config	
 *.csv	
 *.out	
 *.log	

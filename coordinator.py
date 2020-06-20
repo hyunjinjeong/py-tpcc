@@ -150,6 +150,7 @@ if __name__ == '__main__':
     aparser.add_argument('--debug', action='store_true',
                          help='Enable debug log messages')
     args = vars(aparser.parse_args())
+    print(args)
 
     if args['debug']: logging.getLogger().setLevel(logging.DEBUG)
 
@@ -177,6 +178,7 @@ if __name__ == '__main__':
     config['reset'] = args['reset']
     config['load'] = False
     config['execute'] = False
+    config['warehouses'] = args['warehouses']
     if config['reset']: logging.info("Reseting database")
     driver.loadConfig(config)
     logging.info("Initializing TPC-C benchmark using %s" % driver)
