@@ -1,5 +1,9 @@
 # MongoDB Adapted TPC-C Benchmark Using Python 3
 
+The goal of this repository is to benchmark MongoDB using the TPC-C benchmark.
+
+For more information about this test, please see [this paper](http://www.vldb.org/pvldb/vol12/p2254-kamsky.pdf).
+
 ## Prerequisite
 
 1. Install [MongoDB](https://www.mongodb.com/download-center/community).
@@ -52,12 +56,12 @@ The number of clients (threads) varied from 1 to 48.
     # It takes about an hour and a half when there are 100 warehouses.
     python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb
     ```
-    Once you load the data, the data can be reused through multiple benchmarks.
     To measure how long the command takes to run on Windows, use this line instead.
     ```powershell
     Measure-Command {python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb}
     ```
-
+    Once you load the data, the data can be reused through multiple benchmarks.
+    
 3. Execute the benchmark
     ```powershell
     python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb
