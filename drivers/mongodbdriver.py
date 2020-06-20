@@ -233,7 +233,7 @@ class MongodbDriver(AbstractDriver):
         self.read_concern = "majority"
         self.write_concern = pymongo.write_concern.WriteConcern(w=1)
         self.denormalize = True
-        self.output = open('results.json', 'a')
+        self.output = open('results.json', 'a+', encoding='utf-8')
         self.result_doc = {}
         self.warehouses = 0
         self.shards = 1

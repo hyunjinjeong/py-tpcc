@@ -40,10 +40,13 @@ import worker
 import message
 from configparser import ConfigParser
 from pprint import pprint, pformat
+from functools import partial
 
 from util import *
 from runtime import *
 import drivers
+
+open_utf8 = partial(open, encoding='UTF-8')
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s",
@@ -123,7 +126,7 @@ if __name__ == '__main__':
     aparser = argparse.ArgumentParser(description='Python implementation of the TPC-C Benchmark')
     aparser.add_argument('system', choices=getDrivers(),
                          help='Target system driver')
-    aparser.add_argument('--config', type=open,
+    aparser.add_argument('--config', type=open_utf8,
                          help='Path to driver configuration file')
     aparser.add_argument('--reset', action='store_true',
                          help='Instruct the driver to reset the contents of the database')

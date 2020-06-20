@@ -48,6 +48,7 @@ class Executor:
         self.driver = driver
         self.scaleParameters = scaleParameters
         self.stop_on_error = stop_on_error
+        logging.basicConfig()
     ## DEF
 
     def execute(self, duration):

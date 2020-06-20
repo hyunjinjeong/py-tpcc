@@ -37,21 +37,23 @@ import time
 import multiprocessing
 from configparser import ConfigParser
 from pprint import pprint, pformat
+from functools import partial
 
 from util import results, scaleparameters
 from runtime import executor, loader
 
+open_utf8 = partial(open, encoding='UTF-8')
+log_file = open('results.log', encoding='utf-8', mode='a+')
+
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s",
                     datefmt="%m-%d-%Y %H:%M:%S",
-                    #
-                    filename='results.log')
+                    )
 
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-console.setFormatter(logging.Formatter(
-    '%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s'))
-logging.getLogger('').addHandler(console)
+ch = logging.StreamHandler(log_file)
+ch.setLevel(logging.INFO)
+ch.setFormatter(logging.Formatter('%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s'))
+logging.getLogger().addHandler(ch)
 
 
 ## ==============================================
@@ -195,7 +197,7 @@ if __name__ == '__main__':
     aparser = argparse.ArgumentParser(description='Python implementation of the TPC-C Benchmark')
     aparser.add_argument('system', choices=getDrivers(),
                          help='Target system driver')
-    aparser.add_argument('--config', type=open,
+    aparser.add_argument('--config', type=open_utf8,
                          help='Path to driver configuration file')
     aparser.add_argument('--reset', action='store_true',
                          help='Instruct the driver to reset the contents of the database')

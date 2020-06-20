@@ -24,19 +24,25 @@ warehouse 100개를 기준으로 함.
         - 시간 재려면, PowerShell에서
         Measure-Command {python ./tpcc.py --no-execute --warehouses=100 --config=mongodb.config mongodb}
     3. 그 뒤 트랜잭션 실행
-        python ./tpcc.py --no-load --warehouses=100 --duration=6000 --clients=1 --config=mongodb.config mongodb
+        python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb
         
         - 시간 재려면, PowerShell에서
-        Measure-Command {python ./tpcc.py --no-load --warehouses=100 --duration=6000 --clients=1 --config=mongodb.config mongodb}
-    4. 테스트 후 데이터 삭제
+        Measure-Command {python ./tpcc.py --no-load --warehouses=100 --duration=600 --clients=1 --config=mongodb.config mongodb}
+    4. 테스트 끝난 후 데이터 삭제
         mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase(), 3. use local 후 2번 실행.
     - 옵션들
+        --no-execute
+            벤치마크를 수행하지 않고 데이터 load만 함
+        --no-load
+            데이터 load하지 않고 벤치마크만 수행
         --warehouses=int
             warehouse (TPC-C의 데이터 단위)의 수
         --duration=int
             데이터를 로드한 후 벤치마크 때 실행시킬 시간 (초 단위)
         --clients=int
             각각의 클라이언트 노드에서 실행할 쓰레드 갯수 
+        --debug
+            디버그 정보들까지 logging
 
 ## 환경
 
