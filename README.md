@@ -11,28 +11,34 @@
         3. mongo 쉘에서 rs.initiate()
    
 3. 벤치마크 방법
+
+warehouse 100개를 기준으로 함.
+
     1. 우선 configuration 파일을 뽑음
-        - python ./tpcc.py --print-config mongodb > mongodb.config
+        python ./coordinator.py --print-config mongodb > mongodb.config
  
     2. 그 뒤 데이터 load
-        - python ./tpcc.py --no-execute --warehouses 1 --config=mongodb.config mongodb
+        python ./coordinator.py --no-execute --warehouses 100 --config=mongodb.config mongodb
         
-        시간 재려면, PowerShell에서
-        -  Measure-Command {python ./tpcc.py --no-execute --warehouses 1 --config=mongodb.config mongodb}
+        - 시간 재려면, PowerShell에서
+        Measure-Command {python ./coordinator.py --no-execute --warehouses 1 --config=mongodb.config mongodb}
     3. 그 뒤 트랜잭션 실행
-        - python ./tpcc.py --no-load --warehouses 1 --config=mongodb.config mongodb
+        python ./coordinator.py --no-load --warehouses 100 --config=mongodb.config mongodb
         
-        시간 재려면, PowerShell에서
-        -  Measure-Command {python ./tpcc.py --no-load --warehouses 1 --config=mongodb.config mongodb}
+        - 시간 재려면, PowerShell에서
+        Measure-Command {python ./coordinator.py --no-load --warehouses 1 --config=mongodb.config mongodb}
+
+        - 테스트 예시 Command
+        Measure-Command {python ./coordinator.py --no-load --warehouses 100 --duration 6000 --clients 1 --config=mongodb.config mongodb}
     4. 테스트 후 데이터 삭제
-        - mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase(), 3. use local 후 2번 실행.
+        mongo 쉘에서, 1. use tpcc, 2. db.dropDatabase(), 3. use local 후 2번 실행.
     - 옵션들
-        - --warehouses=int
-            - warehouse (TPC-C의 데이터 단위)의 수
-        - --duration=int
-            - 데이터를 로드한 후 벤치마크 때 실행시킬 시간 (초 단위)
-        - --clientprocs=int
-            - 각각의 클라이언트 노드에서 실행할 쓰레드 갯수 
+        --warehouses=int
+            warehouse (TPC-C의 데이터 단위)의 수
+        --duration=int
+            데이터를 로드한 후 벤치마크 때 실행시킬 시간 (초 단위)
+        --clients=int
+            각각의 클라이언트 노드에서 실행할 쓰레드 갯수 
 
 ## 환경
 
