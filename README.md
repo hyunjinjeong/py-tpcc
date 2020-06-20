@@ -2,7 +2,7 @@
 
 The goal of this repository is to benchmark MongoDB using the TPC-C benchmark.
 
-For more information about this test, please see [this paper](http://www.vldb.org/pvldb/vol12/p2254-kamsky.pdf).
+For more information about TPC-C benchmark adaption for MongoDB, please see [this paper](http://www.vldb.org/pvldb/vol12/p2254-kamsky.pdf).
 
 ## Prerequisite
 
