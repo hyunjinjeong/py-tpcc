@@ -80,25 +80,15 @@ The number of clients (threads) varied from 1 to 48.
     
 ## Arguments
 
-1. --no-execute
+1. `--no-execute`: Load the data only.
 
-    Only load the data
+2. `--no-load`: Execute the benchmark only.
 
-2. --no-load
+3. `--warehouses=int`: The number of warehouses to use. Default: 4.
 
-    Only execute the benchmark
+4. `--duration=int`: How long to the execution phase of the benchmark (in seconds). Default: 60.
 
-3. --warehouses=int
-
-    The number of warehouses
-
-4. --duration=int
-
-    How long to the execution phase of the benchmark (in seconds)
-
-5. --clients=int
-
-    The process number of a single node (for concurrent execution).
+5. `--clients=int`: The process number of a single node (for concurrent execution). Default: 1.
 
 ## Environment
 
