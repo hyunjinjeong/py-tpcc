@@ -973,7 +973,7 @@ class MongodbDriver(AbstractDriver):
             c_data = (new_data + "|" + c_data)
             if len(c_data) > constants.MAX_C_DATA:
                 c_data = c_data[:constants.MAX_C_DATA]
-            customer_update["$set"] = {"C_DATA": c_data}
+            customer_update["$set"]  = {"C_DATA": c_data}
         ## IF
 
         # Concatenate w_name, four spaces, d_name
@@ -1116,6 +1116,10 @@ class MongodbDriver(AbstractDriver):
 
     # Should we retry txns within the same session or start a new one?
     def run_transaction_with_retries(self, txn_callback, name, params):
+        if self.no_transactions:
+            value = txn_callback(None, params)
+            return value, 0
+
         txn_retry_counter = 0
         to = pymongo.client_session.TransactionOptions(
             read_concern=None,
