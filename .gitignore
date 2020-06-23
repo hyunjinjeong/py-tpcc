@@ -4,9 +4,6 @@ venv/
 *.swp
 *.pyc
 *.csv	
-*.out	
-*.log	
-*.log.*
-results.log
+*.out
 results.json
 temp*

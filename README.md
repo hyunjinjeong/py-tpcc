@@ -2,9 +2,9 @@
 
 The goal of this repository is to benchmark MongoDB using the TPC-C benchmark.
 
-There are results of the benchmarks in [RESULTS.md](https://github.com/hyunjinjeong/py-tpcc/blob/master/RESULTS.md).
+There are results of the benchmarks in [./results](https://github.com/hyunjinjeong/py-tpcc/tree/master/results).
 
-For more information about TPC-C benchmark adaption for MongoDB, please see [this paper](http://www.vldb.org/pvldb/vol12/p2254-kamsky.pdf).
+For more information about the TPC-C benchmark adaption for MongoDB, please see [this paper](http://www.vldb.org/pvldb/vol12/p2254-kamsky.pdf).
 
 ## Prerequisite
 
@@ -44,9 +44,17 @@ To run 'mongod' as a replica set on localhost, run the server as below:
 
 In TPC-C tests, the amount of data is determined by the number of `warehouses`.
 
-In this test, I used 100 warehouses and the benchmarks ran for 600 seconds. 
+In this test, I used 100 warehouses and the benchmarks ran for 600 seconds.
 
 The number of clients (threads) varied from 1 to 48.
+
+If you just want to run the benchmarks as I did, execute the `run.bat` file in the root directory.
+
+```powershell
+./run.bat
+```
+
+Otherwise, you can manually set up the benchmarks.
 
 1. First, generate a MongoDB configuration file.
     ```powershell
